@@ -48,7 +48,7 @@ const removeBtnColor = () => {
 const plants = (data) => {
   data.forEach((tree) => {
     treeContainer.innerHTML += `
-    <div id=${tree.id} class="p-4 bg-white shadow-xl rounded-lg ">
+    <div id=${tree.id} class="p-4 bg-white shadow-xl rounded-lg flex flex-col justify-between h-[550px]">
         <div class="h-1/3">
         <img
                 class="rounded-lg h-full w-full object-cover"
@@ -57,7 +57,7 @@ const plants = (data) => {
               />
         </div>
               
-              <h4 class="treeName text-lg font-semibold mt-3">${tree.name}</h4>
+              <h4 onclick=getModal(${tree.id}) class="treeName text-lg font-semibold mt-3 cursor-pointer">${tree.name}</h4>
               <p class="my-2">
                 ${tree.description}
               </p>
@@ -143,6 +143,45 @@ const deleteCartItem = (event) => {
       console.log(cartItems);
     }
   });
+};
+
+const getModal = (id) => {
+  console.log(id);
+  fetch(`https://openapi.programming-hero.com/api/plant/${id}`)
+    .then((res) => res.json())
+    .then((data) => createModal(data.plants));
+  my_modal_5.showModal();
+};
+
+const createModal = (tree) => {
+  let modal = document.getElementById("my_modal_5");
+  modal.innerHTML = `
+  <div id=${tree.id} class="modal-box p-4 bg-white shadow-xl rounded-lg flex flex-col justify-between h-[550px]">
+  <h4 onclick=getModal(${tree.id}) class="treeName text-lg font-semibold mt-3">${tree.name}</h4>
+        <div class="h-[50%]">
+        <img
+                class="rounded-lg h-full w-full object-cover "
+                src=${tree.image}
+                alt=""
+              />
+        </div>
+              <div class="flex flex-col items-start gap-2 ">
+                <button
+                  
+                >
+                  <span class="font-bold text-lg">Category:</span> ${tree.category}
+                </button>
+                <h4 ><span class="font-bold text-lg">Price:</span><i class=" fa-solid fa-bangladeshi-taka-sign"></i><span class="treePrice">${tree.price}</span></h4>
+                <h4><span class="font-bold text-lg">Description:</span>${tree.description}</h4>
+              </div>
+               <div class="modal-action">
+               <form method="dialog">
+                <!-- if there is a button in form, it will close the modal -->
+                <button class="btn">Close</button>
+              </form>
+            </div>
+            </div>
+            `;
 };
 
 loadData();
