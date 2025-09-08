@@ -22,12 +22,12 @@ const loadAllCategories = (data) => {
   let allCategories = document.getElementById("all-categories");
   let allTree = document.createElement("p");
   allTree.innerHTML = `
-    <p id=lesson-btn-no-all onclick=loadCategoryData("all") class="category-btn bg-[#15803D] text-white py-2 pl-2.5 rounded-lg hover:bg-[#1fb857] hover:text-white transition cursor-pointer mb-2">All Trees</p>
+    <p id=lesson-btn-no-all onclick=loadCategoryData("all") class="category-btn bg-[#15803D] text-white py-2 px-2.5 rounded-lg hover:bg-[#1fb857] hover:text-white transition cursor-pointer mb-2">All Trees</p>
   `;
   allCategories.appendChild(allTree);
   data.forEach((data) => {
     allCategories.innerHTML += `
-  <p id=lesson-btn-no-${data.id} onclick=loadCategoryData(${data.id}) class="category-btn  py-2 pl-2.5 rounded-lg hover:bg-[#1fb857] hover:text-white transition cursor-pointer mb-2">${data.category_name}</p>
+  <p id=lesson-btn-no-${data.id} onclick=loadCategoryData(${data.id}) class="category-btn  py-2 px-2.5 rounded-lg hover:bg-[#1fb857] hover:text-white transition cursor-pointer mb-2  text-base md:text-lg">${data.category_name}</p>
   `;
   });
 };
