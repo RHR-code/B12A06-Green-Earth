@@ -10,7 +10,9 @@ const loadData = () => {
       plants(data.plants);
       loader.classList.add("hidden");
     });
+};
 
+const loadCategories = () => {
   fetch("https://openapi.programming-hero.com/api/categories")
     .then((res) => res.json())
     .then((data) => loadAllCategories(data.categories));
@@ -18,17 +20,24 @@ const loadData = () => {
 
 const loadAllCategories = (data) => {
   let allCategories = document.getElementById("all-categories");
+  let allTree = document.createElement("p");
+  allTree.innerHTML = `
+    <p id=lesson-btn-no-all onclick=loadCategoryData("all") class="category-btn bg-[#15803D] text-white py-2 pl-2.5 rounded-lg hover:bg-[#1fb857] hover:text-white transition cursor-pointer mb-2">All Trees</p>
+  `;
+  allCategories.appendChild(allTree);
   data.forEach((data) => {
     allCategories.innerHTML += `
-  <p id=lesson-btn-no-${data.id} onclick=loadCategoryData(${data.id}) class="category-btn py-2 pl-2.5 rounded-lg hover:bg-[#1fb857] hover:text-white transition cursor-pointer mb-2">${data.category_name}</p>
+  <p id=lesson-btn-no-${data.id} onclick=loadCategoryData(${data.id}) class="category-btn  py-2 pl-2.5 rounded-lg hover:bg-[#1fb857] hover:text-white transition cursor-pointer mb-2">${data.category_name}</p>
   `;
   });
 };
 const loadCategoryData = (id) => {
+  if (id === "all") {
+    loadData();
+  }
   let categoryBtn = document.getElementById(`lesson-btn-no-${id}`);
   removeBtnColor();
   categoryBtn.classList.add("bg-[#15803D]", "text-white");
-  console.log(loader);
 
   loader.classList.remove("hidden");
   treeContainer.innerHTML = "";
@@ -46,7 +55,7 @@ const removeBtnColor = () => {
 };
 
 const plants = (data) => {
-  data.forEach((tree) => {
+  data?.forEach((tree) => {
     treeContainer.innerHTML += `
     <div id=${tree.id} class="p-4 bg-white shadow-xl rounded-lg flex flex-col justify-between h-[550px]">
         <div class="h-1/3">
@@ -87,11 +96,12 @@ const plants = (data) => {
       let id = e.target.parentElement.id;
 
       cartItems.push({ name: name, price: price, id: id });
+      showAlert(name);
       addToCart();
     });
   });
 };
-const addToCart = (name, price) => {
+const addToCart = () => {
   let cart = document.getElementById("cart");
   cart.innerHTML = "";
   cartItems.forEach((item) => {
@@ -134,19 +144,16 @@ const addTotalAmount = () => {
 const deleteCartItem = (event) => {
   event.target.parentElement.remove();
   let id = event.target.parentElement.id;
-  console.log(id);
   cartItems.map((cart) => {
     if (id === cart.id) {
       let index = cartItems.indexOf(cart, 0);
       cartItems.splice(index, 1);
       addTotalAmount();
-      console.log(cartItems);
     }
   });
 };
 
 const getModal = (id) => {
-  console.log(id);
   fetch(`https://openapi.programming-hero.com/api/plant/${id}`)
     .then((res) => res.json())
     .then((data) => createModal(data.plants));
@@ -184,4 +191,9 @@ const createModal = (tree) => {
             `;
 };
 
+const showAlert = (name) => {
+  alert(`${name} has been added to the cart.`);
+};
+
 loadData();
+loadCategories();
