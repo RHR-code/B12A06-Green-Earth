@@ -95,12 +95,20 @@ const plants = (data) => {
       let price = e.target.parentElement.querySelector(".treePrice").innerText;
       let id = e.target.parentElement.id;
 
-      cartItems.push({ name: name, price: price, id: id });
-      showAlert(name);
-      addToCart();
+      let has = cartItems.some((item) => item.id === id);
+
+      if (!has) {
+        cartItems.push({ name: name, price: price, id: id });
+        showAlert(name);
+
+        addToCart();
+      } else {
+        alert(`${name} is already in the cart`);
+      }
     });
   });
 };
+
 const addToCart = () => {
   let cart = document.getElementById("cart");
   cart.innerHTML = "";
@@ -110,7 +118,8 @@ const addToCart = () => {
                   <h5 class="font-semibold">${item.name}</h5>
                   <p>
                   <i class="fa-solid fa-bangladeshi-taka-sign"></i>
-                    ${item.price}
+                  <span class="item-price">${item.price}</span>
+                    
                     <i class="fa-solid fa-xmark text-[#8C8C8C] text-[12px]"></i> 1
                   </p>
                   <i
@@ -118,12 +127,14 @@ const addToCart = () => {
                   ></i>
                 </div>
       `;
+
     document.querySelectorAll(".cross").forEach((btn) => {
       btn.addEventListener("click", (event) => {
         deleteCartItem(event);
       });
     });
   });
+
   addTotalAmount();
 };
 
@@ -150,6 +161,7 @@ const deleteCartItem = (event) => {
     if (id === cart.id) {
       let index = cartItems.indexOf(cart, 0);
       cartItems.splice(index, 1);
+
       addTotalAmount();
     }
   });
