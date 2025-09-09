@@ -28,5 +28,3 @@
 #### 5) Explain template literals in ES6. How are they different from string concatenation?
 
 - template literals is writing string inside ``backticks.It is easier than string concatenation . We don't need to use the + sign there and we can write multiple lines of string in template literals.we can write variable inside template literals using this ${}.
-example:  let name ="ratul"
-        `hello my name is ${name}`
