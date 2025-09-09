@@ -119,7 +119,7 @@ const addToCart = () => {
                 </div>
       `;
     document.querySelectorAll(".cross").forEach((btn) => {
-      btn.addEventListener("click", () => {
+      btn.addEventListener("click", (event) => {
         deleteCartItem(event);
       });
     });
@@ -134,7 +134,9 @@ const addTotalAmount = () => {
   });
   let totalAmount = document.getElementById("total-amount");
   totalAmount.innerHTML = `${
-    cartItems.length > 0 ? `<h4>Total:</h4> <h4>৳${total}</h4>` : ""
+    cartItems.length > 0
+      ? `<h4>Total:</h4> <h4><i class=" fa-solid fa-bangladeshi-taka-sign"></i>${total}</h4>`
+      : ""
   }
               
               
@@ -144,7 +146,7 @@ const addTotalAmount = () => {
 const deleteCartItem = (event) => {
   event.target.parentElement.remove();
   let id = event.target.parentElement.id;
-  cartItems.map((cart) => {
+  cartItems.forEach((cart) => {
     if (id === cart.id) {
       let index = cartItems.indexOf(cart, 0);
       cartItems.splice(index, 1);
